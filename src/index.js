@@ -69,7 +69,7 @@ app.post("/", (req, res) => {
       .split("\n")
       .find((line) => line.includes("open /tmp"))
       .trim();
-    const cidFromPath = openLine.split("/").pop();
+    const cidFromPath = openLine.split("/").pop().trim();
 
     const url = stdout
       .split("\n")
