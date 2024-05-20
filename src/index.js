@@ -65,12 +65,18 @@ app.post("/", (req, res) => {
       return
     }
 
+    const openLine = stdout
+      .split("\n")
+      .find((line) => line.includes("open /tmp"))
+      .trim();
+    const cidFromPath = openLine.split("/").pop().trim();
+
     const url = stdout
       .split("\n")
       .find((line) => line.includes("https://ipfs.io"))
       .trim()
-    const [cid] = url.split("/").reverse()
-    res.json({ url, cid }).end()
+    const [ipfscid] = url.split("/").reverse()
+    res.json({ url, ipfscid, cid: cidFromPath}).end()
   })
 })
 
