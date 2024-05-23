@@ -40,7 +40,7 @@ app.post("/", (req, res) => {
     return
   }
 
-  cmd = `lilypad run ${module}${!!inputs ? ` -i ${inputs}` : ""}`
+  cmd = `lilypad run ${module}${!!inputs ? ` ${inputs}` : ""}`
   env = { env: { WEB3_PRIVATE_KEY: pk } }
 
   exec(cmd, env, function (error, stdout, stderr) {
