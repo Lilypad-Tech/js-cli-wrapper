@@ -1,14 +1,15 @@
+# lilypad from source
+FROM golang:1.22 AS build
+RUN go version
+RUN git clone https://github.com/Lilypad-Tech/lilypad
+RUN cd lilypad && go build -v -o /usr/local/bin/lilypad
+
+# node server
 FROM node:20.9.0
-
-ARG osarch=amd64
-ARG osname=linux
-
-RUN curl https://api.github.com/repos/lilypad-tech/lilypad/releases/latest | grep "browser_download_url.*lilypad-$osname-$osarch" | cut -d : -f 2,3 | tr -d \" | wget -qi - -O lilypad
-RUN chmod +x lilypad
-RUN mv lilypad /usr/local/bin/lilypad
+WORKDIR app
 
 COPY . .
-
 RUN npm install
+COPY --from=build /usr/local/bin/lilypad /usr/local/bin/lilypad
 
 CMD ["node", "./src/index.js"]
