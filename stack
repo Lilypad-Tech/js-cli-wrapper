@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+function docker-build() {
+  docker build \
+    -t js-cli-wrapper \
+    .
+}
+
+function docker-run() {
+  docker run \
+    --rm \
+    --name js-cli-wrapper \
+    --add-host localhost:host-gateway \
+    -v /tmp/lilypad/data:/tmp/lilypad/data \
+    -p 3000:3000 \
+    js-cli-wrapper
+}
+
+function dev() {
+  npm run dev
+}
+
+function run() {
+  WEB3_PRIVATE_KEY=""
+
+  curl \
+    -X POST \
+    -H "Content-Type: application/json" \
+    -d '{"pk": "'"${WEB3_PRIVATE_KEY}"'", "module": "cowsay:v0.0.4", "inputs": "-i Message=moo" }' \
+    http://localhost:3000
+}
+
+function stream() {
+  WEB3_PRIVATE_KEY=""
+
+  curl \
+    -X POST \
+    -H "Content-Type: application/json" \
+    -d '{"pk": "'"${WEB3_PRIVATE_KEY}"'", "module": "cowsay:v0.0.4", "inputs": "-i Message=moo", "opts": { "stream": true } }' \
+    http://localhost:3000
+}
+
+eval "$@"
