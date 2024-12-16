@@ -28,7 +28,11 @@ app.post("/", (req, res) => {
     inputs = "",
     opts: { stream } = { stream: false },
   } = req.body
-  console.log({ module, inputs, stream })
+    console.log('Request received:', {
+      moduleRequested: module,
+      inputsRequested: inputs,
+      streamRequested: stream
+    })
 
   if (!pk) {
     res.json({ error: "Mising private key" }).end()
@@ -39,17 +43,19 @@ app.post("/", (req, res) => {
     res.json({ error: "Mising module name" }).end()
     return
   }
+const cmd = `lilypad run -n demonet ${module}${!!inputs ? ` ${inputs}` : ""}`
+const env = { env: { WEB3_PRIVATE_KEY: pk } }
 
-  cmd = `lilypad run ${module}${!!inputs ? ` ${inputs}` : ""}`
-  env = { env: { WEB3_PRIVATE_KEY: pk } }
+  console.log('Executing command:', cmd)
+  console.log('Environment:', { ...env, env: { WEB3_PRIVATE_KEY: '[REDACTED]' }})
 
   exec(cmd, env, function (error, stdout, stderr) {
-    console.log("stdout: " + stdout)
-    console.log("stderr: " + stderr)
-    console.log("error: " + error)
-
+    console.log("=== Command Output ===")
+    console.log("stdout:", stdout)
+    console.log("stderr:", stderr)
     if (error) {
-      res.json({ error }).end()
+      console.error("Execution error:", error)
+      res.json({ error, details: stderr }).end()
       return
     }
 
