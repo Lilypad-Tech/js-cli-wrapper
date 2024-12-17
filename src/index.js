@@ -15,7 +15,7 @@ app.get("/ping", (req, res) => {
 
 app.get("/clean", (req, res) => {
   const cmd = `rm -rf /tmp/lilypad/data/*`
-  exec(cmd, function (error, stdout, stderr) {
+  exec(cmd, { env: { ...process.env } }, function (error, stdout, stderr) {
     res.json({ error, stdout, stderr }).end()
   })
 })
@@ -28,26 +28,36 @@ app.post("/", (req, res) => {
     inputs = "",
     opts: { stream } = { stream: false },
   } = req.body
-    console.log('Request received:', {
-      moduleRequested: module,
-      inputsRequested: inputs,
-      streamRequested: stream
-    })
+  console.log('Request received:', {
+    moduleRequested: module,
+    inputsRequested: inputs,
+    streamRequested: stream
+  })
 
   if (!pk) {
-    res.json({ error: "Mising private key" }).end()
+    res.json({ error: "Missing private key" }).end()
     return
   }
 
   if (!module) {
-    res.json({ error: "Mising module name" }).end()
+    res.json({ error: "Missing module name" }).end()
     return
   }
-const cmd = `lilypad run -n demonet ${module}${!!inputs ? ` ${inputs}` : ""}`
-const env = { env: { WEB3_PRIVATE_KEY: pk } }
+
+  const cmd = `lilypad run -n demonet ${module}${!!inputs ? ` ${inputs}` : ""}`
+  const env = {
+    env: {
+      ...process.env,           // Preserve all current env vars including PATH
+      WEB3_PRIVATE_KEY: pk     // Add our private key
+    }
+  }
 
   console.log('Executing command:', cmd)
-  console.log('Environment:', { ...env, env: { WEB3_PRIVATE_KEY: '[REDACTED]' }})
+  console.log('Environment:', { env: { 
+    ...env.env,
+    WEB3_PRIVATE_KEY: '[REDACTED]',
+    PATH: env.env.PATH 
+  }})
 
   exec(cmd, env, function (error, stdout, stderr) {
     console.log("=== Command Output ===")
