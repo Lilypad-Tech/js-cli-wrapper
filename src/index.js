@@ -47,8 +47,8 @@ app.post("/", (req, res) => {
   const cmd = `lilypad run -n demonet ${module}${!!inputs ? ` ${inputs}` : ""}`
   const env = {
     env: {
-      ...process.env,           // Preserve all current env vars including PATH
-      WEB3_PRIVATE_KEY: pk     // Add our private key
+      PATH: process.env.PATH,
+      WEB3_PRIVATE_KEY: pk    
     }
   }
 
