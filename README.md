@@ -2,6 +2,25 @@
 
 An API endpoint that wraps using the Lilypad cli.
 
+## Prerequisites
+
+### Installing and Setting up Lilypad Binary
+
+1. Build the Lilypad binary:
+
+```bash
+git clone https://github.com/Lilypad-Tech/lilypad
+cd lilypad
+go build -v -o lilypad
+
+# For Linux: Move to /usr/bin
+sudo mv lilypad /usr/bin/
+
+# For Mac: Move to /usr/local/bin
+sudo mv lilypad /usr/local/bin
+```
+
+
 
 ## Usage
 
