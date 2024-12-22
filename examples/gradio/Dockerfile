@@ -8,7 +8,7 @@ WORKDIR /app
 # Install the dependencies
 RUN pip install uv
 RUN uv pip install gradio --system
-RUN uv pip install watchdog --system
+RUN uv pip install watchdog web3 --system
 # Copy the rest of the application code into the container
 # COPY . .
 

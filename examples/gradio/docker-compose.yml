@@ -1,17 +1,17 @@
 services:
-  init:
-    image: alpine
-    command: >
-      /bin/sh -c '
-      set -ex &&
-      apk add --no-cache openssl bash &&
-      cd /app &&
-      if [ ! -f .env ] || ! grep -q "WEB3_PRIVATE_KEY" .env; then
-        echo "WEB3_PRIVATE_KEY=$(openssl rand -hex 32)" >> .env;
-      fi
-      '
-    volumes:
-      - .:/app
+  # init:
+  #   image: alpine
+  #   command: >
+  #     /bin/sh -c '
+  #     set -ex &&
+  #     apk add --no-cache openssl bash &&
+  #     cd /app &&
+  #     if [ ! -f .env ] || ! grep -q "WEB3_PRIVATE_KEY" .env; then
+  #       echo "WEB3_PRIVATE_KEY=$(openssl rand -hex 32)" >> .env;
+  #     fi
+  #     '
+  #   volumes:
+  #     - .:/app
 
   gradio:
     image: gradio
@@ -25,15 +25,15 @@ services:
       - "7860:7860"
     env_file:
       - .env
-    depends_on:
-      init:
-        condition: service_completed_successfully
+    # depends_on:
+    #   init:
+    #     condition: service_completed_successfully
 
   cli-wrapper:
     image: cli-wrapper
     build:
       context: ../../
       dockerfile: Dockerfile
-    depends_on:
-      init:
-        condition: service_completed_successfully
+    # depends_on:
+    #   init:
+    #     condition: service_completed_successfully

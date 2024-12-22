@@ -25,7 +25,11 @@
 		{
             "label": "ensure-env-file",
             "type": "shell",
-            "command": "touch ${workspaceFolder}/examples/gradio/.env",
+            "command": "touch ${workspaceFolder}/examples/gradio/.env && \n\
+                if [ ! -f ${workspaceFolder}/examples/gradio/.env ] || \n\
+                ! grep -q \"WEB3_PRIVATE_KEY\" ${workspaceFolder}/examples/gradio/.env; then \n\
+                echo \"WEB3_PRIVATE_KEY=$(openssl rand -hex 32)\" >> ${workspaceFolder}/examples/gradio/.env; \n\
+                fi",
             "presentation": {
                 "reveal": "silent"
             }
