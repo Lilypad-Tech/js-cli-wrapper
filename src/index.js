@@ -1,8 +1,11 @@
 const exec = require("child_process").exec
 const express = require("express")
 const os = require("os")
+const archiver = require('archiver');
+const path = require('path');
+const fs = require('fs');
 
-const port = 3000
+const port = process.env.PORT || 3000
 const app = express()
 
 // middleware
@@ -55,7 +58,7 @@ app.post("/", (req, res) => {
   console.log('Executing command:', cmd)
   console.log('Environment:', { env: { 
     ...env.env,
-    WEB3_PRIVATE_KEY: '[REDACTED]',
+    WEB3_PRIVATE_KEY: "[hidden]",
     PATH: env.env.PATH 
   }})
 
@@ -68,34 +71,31 @@ app.post("/", (req, res) => {
       res.json({ error, details: stderr }).end()
       return
     }
+    const open = stdout.split("\n").find((line) => line.includes("open /tmp"))
+    const pathToResult = open.trim().split(" ")[1]
 
-    if (stream) {
-      const open = stdout.split("\n").find((line) => line.includes("open /tmp"))
-      const [folder] = open
-        .split(" ")
-        .map((line) => line.trim())
-        .reverse()
-      const result = stdout ? "stdout" : "stderr"
-      const path = `${folder}/${result}`
-      res.download(path, "result")
-      return
-    }
+    res.setHeader('Content-Type', 'application/x-tar');
+    res.setHeader('Content-Disposition', 'attachment; filename='+getLastFolderName(pathToResult)+'.tar');
 
-    const openLine = stdout
-      .split("\n")
-      .find((line) => line.includes("open /tmp"))
-      .trim();
-    const cidFromPath = openLine.split("/").pop().trim();
-
-    const url = stdout
-      .split("\n")
-      .find((line) => line.includes("https://ipfs.io"))
-      .trim()
-    const [ipfscid] = url.split("/").reverse()
-    res.json({ url, ipfscid, cid: cidFromPath}).end()
+    const archive = archiver('tar', {
+      zlib: { level: 9 } // Sets the compression level
+    });
+    
+    archive.on('error', function(err) {
+      res.status(500).send({ error: err.message });
+    });
+    
+    archive.pipe(res);
+    archive.directory(pathToResult,getLastFolderName(pathToResult));
+    archive.finalize();
+    return;
   })
 })
-
+function getLastFolderName(dirPath) {
+  // Remove trailing slash if exists
+  const normalizedPath = dirPath.replace(/\/+$/, '');
+  return path.basename(normalizedPath);
+}
 app.listen(port, () => {
   console.log(`Lilypad wrapper listening on port ${port}`)
 })

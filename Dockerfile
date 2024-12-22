@@ -11,5 +11,5 @@ WORKDIR app
 COPY . .
 RUN npm install
 COPY --from=build /usr/local/bin/lilypad /usr/local/bin/lilypad
-
-CMD ["node", "./src/index.js"]
+RUN npm install -g nodemon
+CMD ["nodemon", "./src/index.js"]

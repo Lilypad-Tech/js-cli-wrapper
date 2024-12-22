@@ -1,0 +1,62 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		//{
+		// 	"type": "docker-build",
+		// 	"label": "docker-build",
+		// 	"platform": "python",
+		// 	"dockerBuild": {
+		// 		"tag": "jscliwrapper:latest",
+		// 		"dockerfile": "${workspaceFolder}/examples/gradio/Dockerfile",
+		// 		"context": ".",
+		// 		"pull": true
+		// 	}
+		// },
+		// {
+		// 	"type": "docker-run",
+		// 	"label": "docker-run: debug",
+		// 	"dependsOn": [
+		// 		"docker-build"
+		// 	],
+		// 	"python": {
+		// 		"file": "examples/gradio/app.py"
+		// 	}
+		// }
+		{
+            "label": "ensure-env-file",
+            "type": "shell",
+            "command": "touch ${workspaceFolder}/examples/gradio/.env",
+            "presentation": {
+                "reveal": "silent"
+            }
+        },
+		{
+            "label": "docker-compose: up",
+            "type": "docker-compose",
+            // "command": "docker-compose",
+			"dockerCompose": {
+				"up": {
+					"detached": true,
+					"build": true
+				},
+				"files": [
+					"${workspaceFolder}/examples/gradio/docker-compose.yml"
+				]
+			},
+            // "args": [
+			// 	"-d",
+            //     "-f",
+            //     "${workspaceFolder}/examples/gradio/docker-compose.yml",
+            //     "up",
+            //     "--build"
+            // ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+			 "dependsOn": ["ensure-env-file"],
+			 "dependsOrder": "sequence"
+        }
+	]
+}

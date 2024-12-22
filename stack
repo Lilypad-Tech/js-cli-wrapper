@@ -42,4 +42,22 @@ function stream() {
     http://localhost:3000
 }
 
+function browser() {
+  # Wait until the container is ready
+  until $(curl --output /dev/null --silent --head --fail http://localhost:7860); do
+    printf '.'
+    sleep 1
+  done
+    if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null; then
+    explorer.exe "$1"
+  else
+    case "$(uname)" in
+      Linux*)   xdg-open "$1" ;;
+      Darwin*)  open "$1" ;;
+      CYGWIN*|MINGW*|MSYS*) explorer.exe "$1" ;;
+      *)        echo "Unsupported OS" ;;
+    esac
+  fi
+}
+
 eval "$@"
