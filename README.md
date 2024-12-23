@@ -30,6 +30,8 @@ In `inputs`, each input must be preceeded by the `-i` flag, including tunables. 
 `"inputs": "-i Prompt='an astronaut floating against a white background' -i Steps=50"`
 
 The endpoint can then be tested using curl
+
+Note: This tool is for demonstration purposes and will be improved upon in the coming weeks for greater scalability. Use the following post request with the WEB3_PRIVATE_KEY below to run jobs on Lilypad. The wallet/private key below is funded with testnet tokens only and has been setup to simplify the use of this developer tool.
 ```
 curl -X POST http://localhost:3000 \
 -H "Content-Type: application/json" \
