@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "Docker: Python - General",
+            "type":"node-terminal",
+            "request": "launch",
+            "preLaunchTask": "docker-compose: up",
+            "command": "./stack browser http://localhost:7860",
+        }
+    ]
+}
