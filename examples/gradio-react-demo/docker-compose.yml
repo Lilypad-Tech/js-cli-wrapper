@@ -1,0 +1,17 @@
+services:
+  app:
+    image: node:22
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "5173:5173"
+    command: npm run dev
+  gradio:
+    extends:
+      file: ../gradio/docker-compose.yml
+      service: gradio  
+  cli-wrapper:
+    extends:
+      file: ../gradio/docker-compose.yml
+      service: cli-wrapper      

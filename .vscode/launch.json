@@ -5,7 +5,7 @@
             "type":"node-terminal",
             "request": "launch",
             "preLaunchTask": "docker-compose: up",
-            "command": "./stack browser http://localhost:7860",
+            "command": "./stack browser http://localhost:7860 & ./stack browser http://localhost:5173",
         }
     ]
 }
