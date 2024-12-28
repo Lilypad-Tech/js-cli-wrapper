@@ -44,7 +44,7 @@ function stream() {
 
 function browser() {
   # Wait until the container is ready
-  until $(curl --output /dev/null --silent --head --fail http://localhost:7860); do
+  until $(curl --output /dev/null --silent --head --fail $1); do
     printf '.'
     sleep 1
   done
