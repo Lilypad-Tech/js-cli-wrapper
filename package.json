@@ -4,7 +4,7 @@
   "description": "An API endpoint that wraps using the Lilypad cli.",
   "main": "src/index.js",
   "scripts": {
-    "dev": "cross-env PORT=3000 nodemon src/index",
+    "dev": "cross-env PORT=3005 nodemon src/index",
     "start": "cross-env PORT=3000 node src/index"
   },
   "author": "Lilypad",
@@ -12,7 +12,10 @@
   "dependencies": {
     "archiver": "^7.0.1",
     "express": "^4.21.2",
-    "node-fetch": "^2.7.0"
+    "ipfs-http-client": "^60.0.1",
+    "node-fetch": "^2.7.0",
+    "tar-stream": "^3.1.7",
+    "toml": "^3.0.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  frp:
+    restart: always
+    image: frp:latest
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    ports:
+      - "7000:7000"
+      - "7500:7500"
+    networks:
+      - localnet    
+networks:
+  localnet:
+    external: true

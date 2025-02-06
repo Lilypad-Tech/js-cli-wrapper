@@ -1,8 +1,8 @@
 # lilypad from source
-FROM golang:1.22 AS build
+FROM golang:1.23 AS build
 RUN go version
 RUN git clone https://github.com/Lilypad-Tech/lilypad
-RUN cd lilypad && go build -v -o /usr/local/bin/lilypad
+RUN cd lilypad && go build -v -x -o /usr/local/bin/lilypad
 
 # node server
 FROM node:20.9.0
