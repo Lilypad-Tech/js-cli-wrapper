@@ -4,10 +4,12 @@ const os = require("os")
 const archiver = require('archiver');
 const path = require('path');
 const fs = require('fs');
+const cors = require('cors');
 
 const port = process.env.PORT || 3000
 const app = express()
 
+app.use(cors());
 // middleware
 app.use(express.json())
 
