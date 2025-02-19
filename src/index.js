@@ -7,6 +7,7 @@ import fs from "fs"
 import toml from "toml"
 import tar from "tar-stream"
 import { create } from "ipfs-http-client"
+import cors from "cors"
 
 const downloadAndSaveToml = async (path) => {
   return new Promise(async (resolve, reject) => {
@@ -45,13 +46,13 @@ const downloadAndSaveToml = async (path) => {
 }
 
 // console.log(envs)
-const exec = require("child_process").exec
-const express = require("express")
-const os = require("os")
-const archiver = require('archiver');
-const path = require('path');
-const fs = require('fs');
-const cors = require('cors');
+// const exec = require("child_process").exec
+// const express = require("express")
+// const os = require("os")
+// const archiver = require('archiver');
+// const path = require('path');
+// const fs = require('fs');
+// const cors = require('cors');
 
 const port = process.env.PORT || 3000
 const app = express()

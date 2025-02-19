@@ -4,7 +4,7 @@
   "description": "An API endpoint that wraps using the Lilypad cli.",
   "main": "src/index.js",
   "scripts": {
-    "dev": "cross-env PORT=3005 nodemon src/index",
+    "dev": "cross-env PORT=3000 nodemon src/index",
     "start": "cross-env PORT=3000 node src/index"
     
   },
