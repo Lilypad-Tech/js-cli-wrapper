@@ -107,7 +107,7 @@ app.post("/", async (req, res) => {
 
   console.log("format", format)
  
-  const cmd = `lilypad run -n dev  ${module}${!!inputs ? ` ${inputs}` : ""}`
+  const cmd = `lilypad run -n demonet  ${module}${!!inputs ? ` ${inputs}` : ""}`
   const env = {
     env: {
       PATH: process.env.PATH,
