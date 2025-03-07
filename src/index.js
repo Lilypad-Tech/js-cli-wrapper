@@ -47,7 +47,7 @@ app.post("/", (req, res) => {
     return
   }
 
-  const cmd = `lilypad run -n demonet ${module}${!!inputs ? ` ${inputs}` : ""}`
+  const cmd = `lilypad run ${module}${!!inputs ? ` ${inputs}` : ""}`
   const env = {
     env: {
       PATH: process.env.PATH,
